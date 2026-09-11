@@ -15,7 +15,7 @@ class FaceEncoder(Protocol):
 
 
 class DeterministicDemoEncoder:
-    """Local-only encoder used to test workflows without treating it as CV."""
+    """Заглушка для проверки процесса без CV-модели; лица она не распознаёт."""
 
     def encode(self, image: bytes) -> list[float]:
         if not image:
@@ -25,7 +25,7 @@ class DeterministicDemoEncoder:
 
 
 class FaceRecognitionEncoder:
-    """Adapter around ready-made OpenCV and face_recognition components."""
+    """Обработка изображения через готовые OpenCV и face_recognition."""
 
     def encode(self, image: bytes) -> list[float]:
         try:

@@ -1,4 +1,4 @@
-"""Create VisionPass schema."""
+"""Создаём таблицы пропусков и проверок доступа."""
 
 from collections.abc import Sequence
 
