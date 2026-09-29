@@ -12,6 +12,8 @@ from visionpass.seed import seed_database
 
 @pytest.fixture(scope="session", autouse=True)
 def reset_database() -> Generator[None, None, None]:
+    if engine.url.database != "visionpass_test":
+        raise RuntimeError("Тесты разрешены только в visionpass_test")
     with engine.begin() as connection:
         connection.execute(
             text(

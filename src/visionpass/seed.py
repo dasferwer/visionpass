@@ -27,17 +27,17 @@ def seed_database() -> None:
     settings = get_settings()
     ensure_user(
         str(settings.admin_email),
-        "VisionPass Admin",
+        "Администратор VisionPass",
         settings.admin_password.get_secret_value(),
         UserRole.ADMIN,
     )
     ensure_user(
         str(settings.reviewer_email),
-        "VisionPass Reviewer",
+        "Проверяющий VisionPass",
         settings.reviewer_password.get_secret_value(),
         UserRole.REVIEWER,
     )
-    logger.info("Seed completed")
+    logger.info("Демонстрационные учётные записи подготовлены")
 
 
 if __name__ == "__main__":

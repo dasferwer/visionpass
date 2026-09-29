@@ -5,47 +5,70 @@ from uuid import UUID
 
 import pika
 
-from visionpass.broker import ENROLLMENT_QUEUE, connect, declare_topology
+from visionpass.broker import ENROLLMENT_QUEUE, INVALID_QUEUE, connect, declare_topology
 from visionpass.cv import get_encoder
 from visionpass.db import SessionLocal
-from visionpass.services import process_enrollment
+from visionpass.models import OutboxEvent
+from visionpass.services import process_next_enrollment
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
-logging.getLogger("pika").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-def handle_message(
-    channel: pika.channel.Channel,
-    method: pika.spec.Basic.Deliver,
-    properties: pika.BasicProperties,
-    body: bytes,
-) -> None:
-    del properties
+def consume_one(channel: pika.channel.Channel) -> bool:
+    method, _properties, body = channel.basic_get(ENROLLMENT_QUEUE, auto_ack=False)
+    if method is None:
+        return False
     try:
         payload = json.loads(body)
+        if (
+            not isinstance(payload, dict)
+            or not isinstance(payload.get("event_id"), str)
+            or not isinstance(payload.get("template_id"), str)
+            or not isinstance(payload.get("generation"), int)
+            or isinstance(payload.get("generation"), bool)
+        ):
+            raise ValueError("Некорректная структура сообщения")
+        event_id, template_id = UUID(payload["event_id"]), UUID(payload["template_id"])
         with SessionLocal() as db:
-            template = process_enrollment(db, UUID(payload["template_id"]), get_encoder())
-        logger.info("Enrollment template %s became %s", template.id, template.status)
-        channel.basic_ack(delivery_tag=method.delivery_tag)
-    except Exception:
-        logger.exception("Enrollment processing failed")
-        channel.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
+            event = db.get(OutboxEvent, event_id)
+            if (
+                event is None
+                or event.event_type != "biometric.enrollment.requested"
+                or event.payload.get("template_id") != str(template_id)
+                or event.payload.get("generation") != payload["generation"]
+            ):
+                raise ValueError("Сообщение не соответствует событию outbox")
+    except (ValueError, TypeError, KeyError):
+        channel.basic_publish(
+            exchange="",
+            routing_key=INVALID_QUEUE,
+            body=body,
+            properties=pika.BasicProperties(delivery_mode=2),
+            mandatory=True,
+        )
+    channel.basic_ack(delivery_tag=method.delivery_tag)
+    return True
 
 
 def run() -> None:
+    logging.basicConfig(level=logging.INFO)
+    logging.getLogger("pika").setLevel(logging.WARNING)
     while True:
-        connection: pika.BlockingConnection | None = None
+        connection = None
         try:
+            with SessionLocal() as db:
+                process_next_enrollment(db, get_encoder())
             connection = connect()
             channel = connection.channel()
             declare_topology(channel)
-            channel.basic_qos(prefetch_count=2)
-            channel.basic_consume(queue=ENROLLMENT_QUEUE, on_message_callback=handle_message)
-            logger.info("Enrollment worker is ready")
-            channel.start_consuming()
-        except Exception:
-            logger.exception("Enrollment worker lost its connection; retrying")
+            channel.confirm_delivery()
+            while connection.is_open:
+                consumed = consume_one(channel)
+                with SessionLocal() as db:
+                    worked = process_next_enrollment(db, get_encoder())
+                connection.process_data_events(time_limit=0 if consumed or worked else 1)
+        except Exception as exc:
+            logger.warning("enrollment_retry kind=%s", type(exc).__name__)
             time.sleep(3)
         finally:
             if connection is not None and connection.is_open:

@@ -9,6 +9,7 @@ from sqlalchemy import (
     Float,
     ForeignKey,
     Index,
+    Integer,
     LargeBinary,
     String,
     Text,
@@ -103,12 +104,27 @@ class BiometricTemplate(UUIDMixin, TimestampMixin, Base):
             name="ck_templates_status",
         ),
         UniqueConstraint("participant_id", name="biometric_templates_participant_key"),
+        CheckConstraint("generation > 0", name="ck_template_generation"),
+        CheckConstraint(
+            "embedding IS NULL AND pending_image IS NULL", name="ck_no_plain_biometrics"
+        ),
+        Index("ix_template_image_expiry", "image_expires_at"),
+        Index("ix_template_expiry", "expires_at"),
     )
 
     participant_id: Mapped[UUID] = mapped_column(
         PGUUID(as_uuid=True), ForeignKey("participants.id", ondelete="CASCADE"), nullable=False
     )
     status: Mapped[TemplateStatus] = mapped_column(String(20), nullable=False)
+    generation: Mapped[int] = mapped_column(Integer, nullable=False, default=1, server_default="1")
+    encoder_id: Mapped[str | None] = mapped_column(String(100))
+    encrypted_embedding: Mapped[bytes | None] = mapped_column(LargeBinary)
+    encrypted_image: Mapped[bytes | None] = mapped_column(LargeBinary)
+    image_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    lease_token: Mapped[UUID | None] = mapped_column(PGUUID(as_uuid=True))
+    lease_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    attempts: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
     embedding: Mapped[list[float] | None] = mapped_column(JSONB(none_as_null=True))
     pending_image: Mapped[bytes | None] = mapped_column(LargeBinary)
     consent_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
@@ -134,6 +150,8 @@ class AccessAttempt(UUIDMixin, Base):
     participant_id: Mapped[UUID | None] = mapped_column(
         PGUUID(as_uuid=True), ForeignKey("participants.id", ondelete="SET NULL")
     )
+    template_generation: Mapped[int | None] = mapped_column(Integer)
+    encoder_id: Mapped[str | None] = mapped_column(String(100))
     decision: Mapped[AccessDecision] = mapped_column(String(20), nullable=False)
     distance: Mapped[float | None] = mapped_column(Float)
     confidence: Mapped[float | None] = mapped_column(Float)

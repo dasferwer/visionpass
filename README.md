@@ -1,109 +1,116 @@
 # VisionPass
 
-Платформа регистрации участников и контроля доступа с асинхронным созданием
-биометрических шаблонов, ручной проверкой сомнительных результатов и полным
-аудитом действий.
-
-> Проект **не разрабатывает собственную ML-модель**. Production-адаптер
-> интегрирует готовые `face_recognition` и OpenCV. Детерминированный `stub`
-> используется только для воспроизводимых локальных тестов бизнес-процесса.
+Платформа регистрации участников и проверки доступа по фотографии. Регистрация
+биометрии выполняется в фоне; сомнительный результат передаётся на ручную проверку.
+Готовый CV-адаптер использует `face_recognition` и OpenCV. Собственная модель не обучается.
+Детерминированный адаптер предназначен только для проверки бизнес-процесса.
 
 ## История проекта
 
-- первоначальная разработка: январь — август 2026 года (период указан
-  приблизительно);
-- подготовка и публикация портфолио-версии: август 2026 года.
+- Первоначальная разработка: январь — август 2026 года, приблизительно.
+- Подготовка портфолио-версии: август 2026 года.
+- Защита хранения, удаления и конкурентной обработки: сентябрь 2026 года.
 
-Репозиторий содержит актуализированную и документированную версию проекта,
-подготовленную для публичного портфолио.
+Это портфолио-проект. Реальное распознавание, нагрузка и работа в эксплуатации
+не подтверждены тестовым стендом.
 
 ## Возможности
 
-- JWT-аутентификация и роли `admin` / `reviewer`;
-- события и участники с защитой от дублей;
-- обязательная фиксация согласия перед enrollment;
-- временное хранение исходного фото только до обработки worker-ом;
-- RabbitMQ + transactional outbox для фонового создания шаблона;
-- хранение embedding без исходного изображения;
-- решения `granted`, `denied` и `review` по двум порогам;
-- единственное ручное решение reviewer-а для сомнительной попытки;
-- аудит без фотографий и embedding-векторов;
-- удаление шаблона и полная анонимизация демонстрационного участника;
-- PostgreSQL, Alembic, OpenAPI, healthcheck и интеграционные тесты.
+- JWT-аутентификация; роли `admin` и `reviewer`.
+- События и участники, фиксация согласия перед обработкой биометрии.
+- Шифрование исходного фото и вектора AES-256-GCM с отдельным случайным nonce
+  и привязкой к ID шаблона, поколению и назначению данных.
+- Поколения и аренда обработки: удаление или новая фотография делают старый
+  результат worker недействительным. CV-адаптер вызывается вне транзакции БД.
+- Восстановление заданий из БД после утраты сообщения RabbitMQ, подтверждения
+  отправки outbox и карантин некорректных уведомлений.
+- Сроки хранения фотографий и шаблонов, отдельный процесс удаления, явное
+  удаление биометрии и анонимизация демонстрационного участника.
+- Проверка только шаблонов подходящего адаптера, защита ручной проверки от
+  изменения или удаления шаблона, аудит без открытых фото и векторов.
 
-## Поток данных
+## Запуск
 
-```mermaid
-flowchart LR
-    Staff[Admin / Reviewer] --> API[FastAPI]
-    API --> DB[(PostgreSQL)]
-    DB --> Publisher[Outbox publisher]
-    Publisher --> MQ[(RabbitMQ)]
-    MQ --> Worker[Enrollment worker]
-    Worker --> Adapter[CV adapter]
-    Adapter --> Ready[face_recognition + OpenCV]
-    Worker --> DB
-    API --> Review[Manual review queue]
-```
-
-Enrollment worker превращает фото в embedding и немедленно очищает исходные
-байты как при успехе, так и при отклонении. Фото с проходной точки используется
-в памяти запроса и в базу не записывается.
-
-## Быстрый запуск
-
-Локальный воспроизводимый режим бизнес-логики:
+Нужны Docker и Docker Compose. Для локальных Python-проверок — Python 3.12+ и uv.
 
 ```bash
-docker compose up --build --detach
+docker compose up --build -d --wait api outbox-publisher enrollment-worker privacy-worker
 ```
 
-- Swagger UI: <http://localhost:8050/docs>
-- healthcheck: <http://localhost:8050/health>
-- RabbitMQ Management: <http://localhost:15685>
+Миграция и создание отсутствующих демонстрационных пользователей выполняются
+отдельным сервисом. Существующие пароли и роли seed не меняет. API и workers
+работают под UID 10001; PostgreSQL и RabbitMQ используют постоянные тома.
 
-Учётные записи:
+- Swagger: <http://localhost:8050/docs>
+- Healthcheck: <http://localhost:8050/health>
+- RabbitMQ Management: <http://localhost:15685>.
 
-```text
-admin@example.com / ChangeMe123!
-reviewer@example.com / ChangeMe123!
-```
+Демонстрационные учётные записи: `admin@example.com` и `reviewer@example.com`,
+пароль — `ChangeMe123!`. Локальные порты привязаны к `127.0.0.1`.
+`/health` показывает `matcher_backend=stub`.
 
-`/health` явно показывает `matcher_backend=stub`, поэтому демо нельзя ошибочно
-выдать за реальное распознавание лиц.
+Для других окружений задайте собственные пароли, JWT-секрет и
+`VISIONPASS_ENCRYPTION_KEY`: случайные 32 байта в Base64. Без этого ключа нельзя
+прочитать сохранённую биометрию; храните его вне репозитория, резервируйте и
+меняйте по процедуре повторного шифрования данных. Демонстрационный ключ Compose
+не подходит для реальных данных. Параметры перечислены в [.env.example](.env.example).
 
-## Готовая CV-интеграция
-
-Для запуска адаптера `face_recognition`/OpenCV используется отдельный Docker
-target с системными библиотеками:
+Фотография хранится до обработки, но не дольше 15 минут по умолчанию. Срок хранения
+шаблона по умолчанию — один день с момента согласия. `privacy-worker` очищает
+просроченные записи с периодом до 10 секунд. Проверка доступа сразу исключает
+просроченный шаблон, даже если очистка ещё не завершилась.
 
 ```bash
-VISIONPASS_BUILD_TARGET=cv \
-VISIONPASS_MATCHER_BACKEND=face_recognition \
-docker compose up --build --detach
+docker compose down
 ```
 
-Адаптер декодирует JPEG/PNG через OpenCV, переводит BGR в RGB и передаёт кадр в
-готовую функцию `face_recognition.face_encodings`. Enrollment принимается только
-для изображения ровно с одним найденным лицом.
+Команда сохраняет тома; `down -v` удаляет данные БД и RabbitMQ.
+
+## Готовый CV-адаптер
+
+Отдельный Docker target устанавливает системные библиотеки и зависимости CV:
+
+```bash
+VISIONPASS_BUILD_TARGET=cv VISIONPASS_MATCHER_BACKEND=face_recognition \
+docker compose up --build -d --wait api outbox-publisher enrollment-worker privacy-worker
+```
+
+Адаптер принимает JPEG и PNG, проверяет формат и число пикселей, декодирует
+кадр через OpenCV и требует ровно одно найденное лицо. Шаблоны демо-адаптера
+не используются реальным адаптером и наоборот. После смены адаптера требуется
+новая регистрация участников. Порог расстояния `0.60` и поле `confidence`
+служат демонстрационной эвристикой, а не подтверждённой вероятностью совпадения.
+Сборка и точность реального адаптера в CI не проверяются.
+
+## Миграция существующих данных
+
+Перед обновлением остановите API и workers, создайте резервную копию БД и ключа,
+затем примените Alembic и запустите новую версию. Миграция переносит открытые фото
+и векторы в зашифрованные поля, очищает прежние поля и помечает старые шаблоны как
+`legacy-unverified`. Их не используют для проверки доступа до повторной регистрации:
+исходный адаптер старой записи не был зафиксирован.
+
+Резервные копии, созданные до миграции, могут содержать открытые данные; срок их
+хранения и удаление нужно контролировать отдельно. Откат миграции, который вернул
+бы открытое хранение, запрещён. Смешанный запуск старого и нового API не поддерживается.
 
 ## Проверки
 
 ```bash
-docker compose --profile test up --build \
-  --abort-on-container-exit --exit-code-from test test
-uv sync --extra dev
+uv sync --frozen --extra dev
 uv run ruff format --check .
 uv run ruff check .
 uv run mypy src
+docker compose --profile test build test
+docker compose --profile test run --rm test
+docker compose --profile test run --rm test python scripts/check_migration.py
+docker compose up --build -d --wait api outbox-publisher enrollment-worker privacy-worker
+docker compose exec -T api python scripts/smoke.py
 ```
 
-Архитектурные и privacy-решения: [`docs/architecture.md`](./docs/architecture.md).
+Тесты очищают только `visionpass_test`. Проверка миграции создаёт отдельную временную
+базу, сверяет исторические записи и расшифровывает перенесённые данные.
+Сценарий `smoke.py` создаёт демонстрационные записи в рабочей БД Compose; запускайте
+его только на локальном стенде.
 
-## English summary
-
-VisionPass is a privacy-aware event-access backend. It integrates ready-made
-`face_recognition` and OpenCV components rather than training a model. The
-system supports consent records, asynchronous enrollment, threshold-based
-manual review, immutable audit events and explicit deletion of demonstration
-biometric data. A deterministic backend is clearly isolated to local tests.
+[Архитектура и ограничения](docs/architecture.md), [результаты проверок](docs/verification.md).

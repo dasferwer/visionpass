@@ -1,7 +1,9 @@
+import io
 from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile, status
+from PIL import Image, UnidentifiedImageError
 from sqlalchemy import select, text
 
 from visionpass.broker import check_connection
@@ -39,13 +41,26 @@ router = APIRouter()
 
 
 async def read_image(photo: UploadFile) -> bytes:
-    if photo.content_type not in {"image/jpeg", "image/png", "application/octet-stream"}:
+    if photo.content_type not in {"image/jpeg", "image/png"}:
         raise HTTPException(status_code=415, detail="JPEG or PNG image required")
     image = await photo.read(get_settings().max_image_bytes + 1)
     if not image:
         raise HTTPException(status_code=422, detail="Image is empty")
     if len(image) > get_settings().max_image_bytes:
         raise HTTPException(status_code=413, detail="Image is too large")
+    if get_settings().matcher_backend != "stub":
+        try:
+            with Image.open(io.BytesIO(image)) as opened:
+                if (
+                    opened.format not in {"JPEG", "PNG"}
+                    or opened.width * opened.height > get_settings().max_image_pixels
+                ):
+                    raise ValueError("Недопустимый формат или размер изображения")
+                opened.verify()
+        except (UnidentifiedImageError, OSError, ValueError):
+            raise HTTPException(
+                status_code=422, detail="Повреждённое или слишком большое изображение"
+            ) from None
     return image
 
 
@@ -55,11 +70,11 @@ def health(db: DbSession) -> dict[str, str]:
     rabbitmq = "ok"
     try:
         db.execute(text("SELECT 1"))
-    except Exception:  # pragma: no cover
+    except Exception:
         database = "error"
     try:
         check_connection()
-    except Exception:  # pragma: no cover
+    except Exception:
         rabbitmq = "error"
     if database != "ok" or rabbitmq != "ok":
         raise HTTPException(

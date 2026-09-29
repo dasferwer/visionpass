@@ -1,45 +1,68 @@
-# VisionPass architecture and privacy decisions
+# Архитектура VisionPass
 
-## Integration, not model development
+## Хранение биометрии
 
-`FaceRecognitionEncoder` is a boundary adapter. OpenCV decodes and normalizes
-the image; the existing `face_recognition.face_encodings` implementation
-produces an embedding. No training pipeline, custom neural network or claim of
-independent ML-model development is present.
+API требует явного согласия при каждой регистрации. Исходная фотография и вектор
+хранятся в PostgreSQL в зашифрованных полях. AES-256-GCM использует случайный
+12-байтный nonce для каждой записи и дополнительные проверяемые данные:
+ID шаблона, поколение и назначение (`image` или `embedding`). Ограничение БД
+запрещает запись в прежние открытые поля. Ключ поступает из конфигурации и не
+сохраняется в БД.
 
-`DeterministicDemoEncoder` exists only so CI can verify enrollment, access,
-review and deletion without downloading a heavy native CV stack. The active
-backend is visible in `/health`.
+Фото удаляется сразу после обработки, а при задержке — по сроку хранения.
+Шаблон и сохранённые метрики попыток удаляются после общего срока хранения. Отдельный `privacy-worker`
+проверяет сроки независимо от enrollment worker. Проверка доступа исключает
+просроченные записи ещё до физического удаления.
 
-## Data minimization
+Резервные копии и старые WAL могут сохранять прежние открытые данные; очистка
+основной таблицы не удаляет их автоматически. Ротация ключа требует отдельной
+процедуры повторного шифрования и контроля резервных копий. Такой процедуры
+в проекте пока нет.
 
-- Enrollment image bytes exist in `pending_image` only until the asynchronous
-  worker succeeds or rejects the image.
-- Access-check images are processed in request memory and never persisted.
-- Audit details contain decisions and consent facts, never images or vectors.
-- The delete endpoint erases the embedding; demo-data deletion also anonymizes
-  the participant record while preserving non-identifying audit integrity.
+## Конкурентная обработка
 
-## Decision policy
+Регистрация блокирует строку участника, затем шаблон, увеличивает поколение
+и в одной транзакции сохраняет фото, согласие, аудит и событие outbox.
+Worker берёт краткосрочную аренду обработки, фиксирует её и освобождает БД.
+Расшифровка и вызов CV-адаптера происходят без блокировки транзакции. Перед
+записью результата worker вновь блокирует участника и шаблон, затем сверяет
+поколение, токен аренды и статус. Запоздалый результат не восстановит удалённые
+данные и не затрёт новую регистрацию.
 
-The nearest embedding distance is compared with two configuration values:
+После сбоя worker незавершённая аренда истекает; задание снова доступно из БД.
+Сообщение RabbitMQ лишь ускоряет обработку. Worker сверяет уведомление с outbox,
+неправильное сообщение переносит в карантин и подтверждает его только после
+подтверждения публикации в карантин. Из-за неопределённого результата отправки
+дубликаты допустимы; поколение и состояние служат границей идемпотентности.
 
-- at or below `match_threshold`: access is granted;
-- inside the additional `review_margin`: no automatic decision, manual review;
-- above both: access is denied without linking a participant.
+Publisher использует `mandatory` и publisher confirms. Транзакция outbox
+удерживается до подтверждения брокера для пакета до 100 событий. При большом
+объёме потребуются отдельные меры для ограничения длительности этой транзакции.
 
-This prevents an uncertain score from being presented as a confident identity.
-Only one manual resolution can be stored for an attempt.
+## Проверка доступа и удаление
 
-## Failure scenarios
+Проба обрабатывается в памяти. Кандидатами служат только активные шаблоны
+нужного события, текущего CV-адаптера и действующего срока хранения.
+После вычисления ближайшего совпадения API перечитывает его под блокировкой
+и сверяет поколение перед сохранением попытки. Если шаблон изменился,
+клиент получает `409` и может повторить проверку. Число кандидатов ограничено
+конфигурацией; превышение возвращает `503` вместо неполного поиска.
 
-| Failure | Behaviour |
-|---|---|
-| RabbitMQ unavailable | Enrollment event remains in transactional outbox |
-| Worker receives the event twice | Terminal template status makes processing idempotent |
-| No face or several faces | Enrollment is rejected; raw bytes are deleted |
-| Uncertain distance | Attempt is routed to manual review |
-| Unmatched image | Denied attempt does not expose nearest participant |
-| Reviewer submits twice | Unique constraint returns `409 Conflict` |
-| Deletion requested | Embedding and pending image are cleared and audited |
-| Real CV packages missing | Adapter fails explicitly; no silent fallback to demo matching |
+Ручное решение возможно только для попытки со статусом `review`, при наличии
+того же действующего поколения шаблона. Уникальное ограничение не допускает
+двух решений для одной попытки. Удаление демонстрационного участника убирает
+его имя, адрес, фото, вектор, ссылки из попыток и текст заметок ручной проверки.
+История аудита сохраняет действия и непрямые UUID без открытой биометрии.
+
+## Границы решения
+
+Демо-адаптер вычисляет хеш произвольных байтов и не распознаёт лица.
+`face_recognition` — готовый внешний компонент; его качество, смещения,
+устойчивость к подмене фотографии и пригодность к допуску людей здесь не оценены.
+Порог расстояния и `confidence` не калиброваны. Нет защиты от предъявления фото
+вместо живого человека, проверки прав на отдельные события и журнала согласия
+с юридически значимым доказательством личности.
+
+Локальный стенд не содержит TLS между сервисами, отдельного хранилища ключей,
+HA, проверенного восстановления резервной копии и нагрузочных замеров.
+Файлы WAL и резервные копии требуют отдельной политики хранения.

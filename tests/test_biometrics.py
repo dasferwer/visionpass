@@ -29,7 +29,8 @@ def test_enrollment_access_and_biometric_deletion(
         processed = process_enrollment(db, template_id, DeterministicDemoEncoder())
     assert processed.status == TemplateStatus.READY
     assert processed.pending_image is None
-    assert processed.embedding is not None
+    assert processed.embedding is None
+    assert processed.encrypted_embedding is not None
 
     granted = client.post(
         "/api/v1/access/check",
@@ -99,5 +100,5 @@ def test_demo_data_deletion_anonymizes_participant(
         stored = db.get(Participant, UUID(str(participant["id"])))
         assert stored is not None
         assert stored.deleted_at is not None
-        assert stored.full_name == "Deleted participant"
+        assert stored.full_name == "Удалённый участник"
         assert stored.email.endswith("@example.invalid")

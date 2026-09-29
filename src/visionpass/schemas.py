@@ -69,6 +69,10 @@ class TemplateRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: UUID
     participant_id: UUID
+    generation: int
+    encoder_id: str | None
+    image_expires_at: datetime | None
+    expires_at: datetime | None
     status: TemplateStatus
     consent_at: datetime
     processed_at: datetime | None
@@ -81,6 +85,8 @@ class AccessAttemptRead(BaseModel):
     id: UUID
     event_id: UUID
     participant_id: UUID | None
+    encoder_id: str | None
+    template_generation: int | None
     decision: AccessDecision
     distance: float | None
     confidence: float | None

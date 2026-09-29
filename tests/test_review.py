@@ -1,9 +1,12 @@
 from uuid import UUID
 
 from fastapi.testclient import TestClient
+from sqlalchemy import select
 
+from visionpass.cv import DeterministicDemoEncoder
 from visionpass.db import SessionLocal
-from visionpass.models import AccessAttempt, AccessDecision
+from visionpass.models import AccessAttempt, AccessDecision, User, UserRole
+from visionpass.services import process_enrollment, request_enrollment
 
 
 def test_uncertain_attempt_can_be_manually_reviewed_once(
@@ -12,10 +15,17 @@ def test_uncertain_attempt_can_be_manually_reviewed_once(
     event_and_participant: tuple[dict[str, object], dict[str, object]],
 ) -> None:
     event, participant = event_and_participant
+    with SessionLocal() as db:
+        actor = db.scalar(select(User).where(User.role == UserRole.ADMIN))
+        assert actor is not None
+        template = request_enrollment(db, actor, UUID(str(participant["id"])), b"review-face", True)
+        process_enrollment(db, template.id, DeterministicDemoEncoder())
     with SessionLocal.begin() as db:
         attempt = AccessAttempt(
             event_id=UUID(str(event["id"])),
             participant_id=UUID(str(participant["id"])),
+            template_generation=template.generation,
+            encoder_id=DeterministicDemoEncoder.model_id,
             decision=AccessDecision.REVIEW,
             distance=0.65,
             confidence=0.35,

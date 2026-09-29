@@ -11,11 +11,15 @@ class FaceEncodingError(ValueError):
 
 
 class FaceEncoder(Protocol):
+    model_id: str
+
     def encode(self, image: bytes) -> list[float]: ...
 
 
 class DeterministicDemoEncoder:
     """Заглушка для проверки процесса без CV-модели; лица она не распознаёт."""
+
+    model_id = "demo-sha256-v1"
 
     def encode(self, image: bytes) -> list[float]:
         if not image:
@@ -26,6 +30,8 @@ class DeterministicDemoEncoder:
 
 class FaceRecognitionEncoder:
     """Обработка изображения через готовые OpenCV и face_recognition."""
+
+    model_id = "face-recognition-128-v1"
 
     def encode(self, image: bytes) -> list[float]:
         try:

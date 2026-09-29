@@ -8,6 +8,7 @@ from visionpass.config import get_settings
 
 EXCHANGE = "visionpass.events"
 ENROLLMENT_QUEUE = "visionpass.enrollments"
+INVALID_QUEUE = "visionpass.enrollments.invalid"
 
 
 def connect() -> pika.BlockingConnection:
@@ -20,6 +21,7 @@ def connect() -> pika.BlockingConnection:
 
 def declare_topology(channel: pika.channel.Channel) -> None:
     channel.exchange_declare(exchange=EXCHANGE, exchange_type="topic", durable=True)
+    channel.queue_declare(queue=INVALID_QUEUE, durable=True)
     channel.queue_declare(queue=ENROLLMENT_QUEUE, durable=True)
     channel.queue_bind(
         queue=ENROLLMENT_QUEUE,
@@ -32,6 +34,7 @@ def publish_event(channel: pika.channel.Channel, event_type: str, body: Mapping[
     channel.basic_publish(
         exchange=EXCHANGE,
         routing_key=event_type,
+        mandatory=True,
         body=json.dumps(body).encode(),
         properties=pika.BasicProperties(
             content_type="application/json",

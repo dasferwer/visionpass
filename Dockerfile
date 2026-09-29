@@ -17,7 +17,8 @@ FROM base AS runtime
 COPY alembic.ini ./
 COPY migrations ./migrations
 COPY scripts ./scripts
-RUN chmod +x ./scripts/*.sh
+RUN chmod +x ./scripts/*.sh && useradd --uid 10001 --create-home visionpass
+USER visionpass
 ENTRYPOINT ["./scripts/docker-entrypoint.sh"]
 CMD ["uvicorn", "visionpass.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
@@ -29,7 +30,8 @@ RUN uv sync --frozen --extra cv
 COPY alembic.ini ./
 COPY migrations ./migrations
 COPY scripts ./scripts
-RUN chmod +x ./scripts/*.sh
+RUN chmod +x ./scripts/*.sh && useradd --uid 10001 --create-home visionpass
+USER visionpass
 ENTRYPOINT ["./scripts/docker-entrypoint.sh"]
 CMD ["uvicorn", "visionpass.main:app", "--host", "0.0.0.0", "--port", "8000"]
 

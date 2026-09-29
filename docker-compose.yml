@@ -5,28 +5,30 @@ services:
       POSTGRES_DB: visionpass
       POSTGRES_USER: visionpass
       POSTGRES_PASSWORD: visionpass
+    volumes:
+      - visionpass_postgres:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U visionpass -d visionpass"]
       interval: 3s
       timeout: 3s
       retries: 20
-    volumes:
-      - visionpass_postgres:/var/lib/postgresql/data
 
   rabbitmq:
     image: rabbitmq:4-management-alpine
     environment:
       RABBITMQ_DEFAULT_USER: visionpass
       RABBITMQ_DEFAULT_PASS: visionpass
+    volumes:
+      - visionpass_rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "127.0.0.1:${VISIONPASS_RABBITMQ_MANAGEMENT_PORT:-15685}:15672"
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 5s
       timeout: 5s
       retries: 30
-    ports:
-      - "${VISIONPASS_RABBITMQ_MANAGEMENT_PORT:-15685}:15672"
 
-  api:
+  migrate:
     build:
       context: .
       target: ${VISIONPASS_BUILD_TARGET:-runtime}
@@ -34,6 +36,7 @@ services:
       VISIONPASS_DATABASE_URL: ${VISIONPASS_DATABASE_URL:-postgresql+psycopg://visionpass:visionpass@database:5432/visionpass}
       VISIONPASS_RABBITMQ_URL: ${VISIONPASS_RABBITMQ_URL:-amqp://visionpass:visionpass@rabbitmq:5672/%2F}
       VISIONPASS_JWT_SECRET: ${VISIONPASS_JWT_SECRET:-local-visionpass-secret-change-me-at-least-32-bytes}
+      VISIONPASS_ENCRYPTION_KEY: ${VISIONPASS_ENCRYPTION_KEY:-MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=}
       VISIONPASS_ADMIN_EMAIL: ${VISIONPASS_ADMIN_EMAIL:-admin@example.com}
       VISIONPASS_ADMIN_PASSWORD: ${VISIONPASS_ADMIN_PASSWORD:-ChangeMe123!}
       VISIONPASS_REVIEWER_EMAIL: ${VISIONPASS_REVIEWER_EMAIL:-reviewer@example.com}
@@ -43,13 +46,23 @@ services:
       VISIONPASS_REVIEW_MARGIN: ${VISIONPASS_REVIEW_MARGIN:-0.12}
       VISIONPASS_MAX_IMAGE_BYTES: ${VISIONPASS_MAX_IMAGE_BYTES:-5242880}
       VISIONPASS_LOG_LEVEL: ${VISIONPASS_LOG_LEVEL:-INFO}
+    command: ["sh", "-c", "alembic upgrade head && python -m visionpass.seed"]
     depends_on:
       database:
         condition: service_healthy
+
+  api:
+    build:
+      context: .
+      target: ${VISIONPASS_BUILD_TARGET:-runtime}
+    environment: *visionpass-environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
     ports:
-      - "${VISIONPASS_PORT:-8050}:8000"
+      - "127.0.0.1:${VISIONPASS_PORT:-8050}:8000"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
       interval: 5s
@@ -60,9 +73,8 @@ services:
     build:
       context: .
       target: ${VISIONPASS_BUILD_TARGET:-runtime}
-    entrypoint: []
-    command: ["python", "-m", "visionpass.workers.publisher"]
     environment: *visionpass-environment
+    command: ["python", "-m", "visionpass.workers.publisher"]
     depends_on:
       api:
         condition: service_healthy
@@ -71,9 +83,18 @@ services:
     build:
       context: .
       target: ${VISIONPASS_BUILD_TARGET:-runtime}
-    entrypoint: []
-    command: ["python", "-m", "visionpass.workers.enrollment"]
     environment: *visionpass-environment
+    command: ["python", "-m", "visionpass.workers.enrollment"]
+    depends_on:
+      api:
+        condition: service_healthy
+
+  privacy-worker:
+    build:
+      context: .
+      target: ${VISIONPASS_BUILD_TARGET:-runtime}
+    environment: *visionpass-environment
+    command: ["python", "-m", "visionpass.workers.privacy"]
     depends_on:
       api:
         condition: service_healthy
@@ -112,6 +133,7 @@ services:
       VISIONPASS_DATABASE_URL: postgresql+psycopg://visionpass:visionpass@database-test:5432/visionpass_test
       VISIONPASS_RABBITMQ_URL: amqp://visionpass:visionpass@rabbitmq-test:5672/%2F
       VISIONPASS_JWT_SECRET: test-visionpass-secret-at-least-32-bytes-long
+      VISIONPASS_ENCRYPTION_KEY: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=
       VISIONPASS_ADMIN_EMAIL: admin-test@example.com
       VISIONPASS_ADMIN_PASSWORD: TestAdmin123!
       VISIONPASS_REVIEWER_EMAIL: reviewer-test@example.com
@@ -126,3 +148,4 @@ services:
 
 volumes:
   visionpass_postgres:
+  visionpass_rabbitmq:
