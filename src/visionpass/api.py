@@ -40,10 +40,10 @@ from visionpass.services import (
 router = APIRouter()
 
 
-async def read_image(photo: UploadFile) -> bytes:
+def read_image(photo: UploadFile) -> bytes:
     if photo.content_type not in {"image/jpeg", "image/png"}:
         raise HTTPException(status_code=415, detail="JPEG or PNG image required")
-    image = await photo.read(get_settings().max_image_bytes + 1)
+    image = photo.file.read(get_settings().max_image_bytes + 1)
     if not image:
         raise HTTPException(status_code=422, detail="Image is empty")
     if len(image) > get_settings().max_image_bytes:
@@ -130,14 +130,14 @@ def create_participant_endpoint(
     status_code=status.HTTP_202_ACCEPTED,
     tags=["biometrics"],
 )
-async def enroll_participant(
+def enroll_participant(
     participant_id: UUID,
     db: DbSession,
     user: CurrentUser,
     photo: Annotated[UploadFile, File()],
     consent: Annotated[bool, Form()],
 ) -> object:
-    image = await read_image(photo)
+    image = read_image(photo)
     return request_enrollment(db, user, participant_id, image, consent)
 
 
@@ -175,13 +175,13 @@ def delete_demo_data(participant_id: UUID, db: DbSession, admin: AdminUser) -> N
     status_code=status.HTTP_201_CREATED,
     tags=["access"],
 )
-async def check_access(
+def check_access(
     db: DbSession,
     user: CurrentUser,
     event_id: Annotated[UUID, Form()],
     photo: Annotated[UploadFile, File()],
 ) -> object:
-    image = await read_image(photo)
+    image = read_image(photo)
     try:
         return verify_access(db, user, event_id, image, get_encoder())
     except FaceEncodingError as exc:
