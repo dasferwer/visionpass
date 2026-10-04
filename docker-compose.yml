@@ -130,6 +130,7 @@ services:
       target: test
     profiles: ["test"]
     environment:
+      TESTING: "true"
       VISIONPASS_DATABASE_URL: postgresql+psycopg://visionpass:visionpass@database-test:5432/visionpass_test
       VISIONPASS_RABBITMQ_URL: amqp://visionpass:visionpass@rabbitmq-test:5672/%2F
       VISIONPASS_JWT_SECRET: test-visionpass-secret-at-least-32-bytes-long

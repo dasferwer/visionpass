@@ -1,6 +1,16 @@
+# ruff: noqa: E402
+import pytest
+
+from visionpass.test_safety import UnsafeTestEnvironment, ensure_test_environment
+
+# Проверяем окружение раньше settings/engine и регистрации любых fixtures.
+try:
+    ensure_test_environment()
+except UnsafeTestEnvironment as exc:
+    raise pytest.UsageError(str(exc)) from None
+
 from collections.abc import Generator
 
-import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 
