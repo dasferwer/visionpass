@@ -34,6 +34,8 @@ class FaceRecognitionEncoder:
     model_id = "face-recognition-128-v1"
 
     def encode(self, image: bytes) -> list[float]:
+        if not image:
+            raise FaceEncodingError("Image is empty")
         try:
             cv2 = importlib.import_module("cv2")
             numpy = importlib.import_module("numpy")

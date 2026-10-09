@@ -1,0 +1,2456 @@
+{
+  "model_id": "face-recognition-128-v1",
+  "threshold": 0.6,
+  "threshold_policy": "pre-existing default; no tuning, training or calibration",
+  "identities": 12,
+  "images": 36,
+  "rejections": [
+    {
+      "identity": "1",
+      "render": 0,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "1",
+      "render": 18,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "2",
+      "render": 1,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "3",
+      "render": 0,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "6",
+      "render": 0,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "6",
+      "render": 1,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "8",
+      "render": 18,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "9",
+      "render": 0,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "9",
+      "render": 18,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "10",
+      "render": 1,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "11",
+      "render": 0,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "11",
+      "render": 1,
+      "reason": "Image must contain exactly one face"
+    },
+    {
+      "identity": "11",
+      "render": 18,
+      "reason": "Image must contain exactly one face"
+    }
+  ],
+  "image_rejection": {
+    "errors": 13,
+    "total": 36,
+    "rate": 0.3611111111111111,
+    "wilson95": [
+      0.22475592946515371,
+      0.5242492451444196
+    ]
+  },
+  "enrollment_rejection": {
+    "errors": 5,
+    "total": 12,
+    "rate": 0.4166666666666667,
+    "wilson95": [
+      0.19326031365875665,
+      0.6804886874504503
+    ]
+  },
+  "trial_rejection": {
+    "errors": 176,
+    "total": 288,
+    "rate": 0.6111111111111112,
+    "wilson95": [
+      0.553699116462437,
+      0.6655980329508726
+    ]
+  },
+  "far_all_attempts": {
+    "errors": 12,
+    "total": 264,
+    "rate": 0.045454545454545456,
+    "wilson95": [
+      0.02619025396973257,
+      0.07775727881059225
+    ]
+  },
+  "frr_all_attempts": {
+    "errors": 14,
+    "total": 24,
+    "rate": 0.5833333333333334,
+    "wilson95": [
+      0.3883466586522876,
+      0.7553239739018824
+    ]
+  },
+  "far_encoded_only": {
+    "errors": 12,
+    "total": 101,
+    "rate": 0.1188118811881188,
+    "wilson95": [
+      0.06928719446185173,
+      0.19627052606081086
+    ]
+  },
+  "frr_encoded_only": {
+    "errors": 1,
+    "total": 11,
+    "rate": 0.09090909090909091,
+    "wilson95": [
+      0.016232172885884855,
+      0.37735843645159567
+    ]
+  },
+  "interval_limit": "Wilson nominal 95%; repeated identities make trials dependent; not a population confidence guarantee",
+  "trials": [
+    {
+      "claimed": "0",
+      "probe": "0",
+      "render": 1,
+      "genuine": true,
+      "distance": 0.40754685091272697,
+      "accepted": true
+    },
+    {
+      "claimed": "0",
+      "probe": "0",
+      "render": 18,
+      "genuine": true,
+      "distance": 0.3316618614530429,
+      "accepted": true
+    },
+    {
+      "claimed": "0",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.8562237878590175,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.791426170017334,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.8934270603056699,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.8376283700808939,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.8246366723512254,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7138867526987652,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7471868595256064,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7121893259699971,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6983437654444062,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6250602476520617,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6213176985840844,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6853051966989679,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.829450350678317,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6958340671082786,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "0",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "1",
+      "render": 1,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "1",
+      "render": 18,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "1",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6492239069198077,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6932446770197328,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7752748115739595,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "2",
+      "render": 1,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "2",
+      "render": 18,
+      "genuine": true,
+      "distance": 0.5068766020843716,
+      "accepted": true
+    },
+    {
+      "claimed": "2",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6526892557196576,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6230866950911808,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.8806422023791161,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.8832982957598716,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6089745184943639,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7262956323138268,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6739217069511834,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.683740219761621,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.5952927308837551,
+      "accepted": true
+    },
+    {
+      "claimed": "2",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6465368945068839,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.5733973794040111,
+      "accepted": true
+    },
+    {
+      "claimed": "2",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6838829830044323,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "2",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "3",
+      "render": 1,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "3",
+      "render": 18,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "3",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.645829087451682,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6360173356425294,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6703893353530448,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7226071470860586,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7233056444592746,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6823566988800799,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "4",
+      "render": 1,
+      "genuine": true,
+      "distance": 0.49893765677105734,
+      "accepted": true
+    },
+    {
+      "claimed": "4",
+      "probe": "4",
+      "render": 18,
+      "genuine": true,
+      "distance": 0.4451657017786878,
+      "accepted": true
+    },
+    {
+      "claimed": "4",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.49440742691416456,
+      "accepted": true
+    },
+    {
+      "claimed": "4",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.5294080435554718,
+      "accepted": true
+    },
+    {
+      "claimed": "4",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6910273251433764,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7153562740204116,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6205169688397272,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.5047999628183685,
+      "accepted": true
+    },
+    {
+      "claimed": "4",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6512915171925377,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6581927065815695,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "4",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6600906085051654,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6597772119764279,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7591917462622803,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.733518445108414,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7753662168376614,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7114396564089674,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6690096994776747,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6026616098477409,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "5",
+      "render": 1,
+      "genuine": true,
+      "distance": 0.37799385453677675,
+      "accepted": true
+    },
+    {
+      "claimed": "5",
+      "probe": "5",
+      "render": 18,
+      "genuine": true,
+      "distance": 0.40817283734932863,
+      "accepted": true
+    },
+    {
+      "claimed": "5",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7176890061684101,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6875311231442606,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6240599798352606,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.5520815258664619,
+      "accepted": true
+    },
+    {
+      "claimed": "5",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6739775260573917,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6718964880422504,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "5",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "6",
+      "render": 1,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "6",
+      "render": 18,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "6",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.5318600607876608,
+      "accepted": true
+    },
+    {
+      "claimed": "7",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6085591458969283,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7353891911074605,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6578936700405101,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7335167534649949,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7045953833992472,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.8303690729198424,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7829735329227693,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6742481524201678,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7096231356994521,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7020780153396072,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "7",
+      "render": 1,
+      "genuine": true,
+      "distance": 0.4667333854283009,
+      "accepted": true
+    },
+    {
+      "claimed": "7",
+      "probe": "7",
+      "render": 18,
+      "genuine": true,
+      "distance": 0.33794361045630605,
+      "accepted": true
+    },
+    {
+      "claimed": "7",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.5819492934394023,
+      "accepted": true
+    },
+    {
+      "claimed": "7",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7293599261223517,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.5789265567762396,
+      "accepted": true
+    },
+    {
+      "claimed": "7",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "7",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7033823292382209,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7545020904179802,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6829039086845328,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7183969667581582,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6482487096564956,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6176874726873604,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7060979867870629,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7234018927579412,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6974577050361295,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.688300799108283,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6902602882342818,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6539142030444778,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6218036790031694,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "8",
+      "render": 1,
+      "genuine": true,
+      "distance": 0.450262506023354,
+      "accepted": true
+    },
+    {
+      "claimed": "8",
+      "probe": "8",
+      "render": 18,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.5090169927107614,
+      "accepted": true
+    },
+    {
+      "claimed": "8",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.5960112694813857,
+      "accepted": true
+    },
+    {
+      "claimed": "8",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "8",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "9",
+      "render": 1,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "9",
+      "render": 18,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "9",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7368662388342433,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7094319028945247,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.5640928160795032,
+      "accepted": true
+    },
+    {
+      "claimed": "10",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.8579218802333881,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.8566444500351452,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7847813102652881,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6056593742354763,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6983598429437882,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7208378172713903,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.6057238644897054,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.762167594477999,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.734506522242461,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": 0.7442393431100653,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.6645786791707992,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": 0.7898956028801767,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "10",
+      "render": 1,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "10",
+      "render": 18,
+      "genuine": true,
+      "distance": 0.6149059322120208,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "11",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "10",
+      "probe": "11",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "0",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "0",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "1",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "1",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "2",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "2",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "3",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "3",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "4",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "4",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "5",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "5",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "6",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "6",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "7",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "7",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "8",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "8",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "9",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "9",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "10",
+      "render": 1,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "10",
+      "render": 18,
+      "genuine": false,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "11",
+      "render": 1,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    },
+    {
+      "claimed": "11",
+      "probe": "11",
+      "render": 18,
+      "genuine": true,
+      "distance": null,
+      "accepted": false
+    }
+  ],
+  "environment": {
+    "python": "3.12.13",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "face-recognition": "1.3.0",
+      "face-recognition-models": "0.3.0",
+      "dlib": "20.0.1",
+      "opencv-python-headless": "4.14.0.94",
+      "numpy": "2.5.2"
+    }
+  },
+  "elapsed_seconds": 1.0929215000069235
+}

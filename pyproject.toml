@@ -26,6 +26,8 @@ dependencies = [
 [project.optional-dependencies]
 cv = [
   "face-recognition>=1.3,<2",
+  # face-recognition-models 0.3.0 imports pkg_resources at runtime.
+  "setuptools>=78,<81",
   "opencv-python-headless>=4.12,<5",
 ]
 dev = [
